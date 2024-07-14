@@ -1,0 +1,181 @@
+//Ejercicio 1
+
+class CuentaBancaria {
+    var saldo: Double = 0.0 {
+        willSet(nuevoSaldo) {
+            print("El saldo actual es \(saldo) y será cambiado a \(nuevoSaldo)")
+        }
+        didSet {
+            //print("El saldo ha cambiado de \(oldValue) a \(saldo)")
+            print("El aumento del 10% equivale a: \(calcularAumento())")
+        }
+    }
+    
+    func calcularAumento() -> Double {
+        var aumento: Double = 0.00
+        
+        aumento = (self.saldo * 0.10) + saldo
+        
+        return aumento
+    }
+}
+ 
+let cuenta = CuentaBancaria()
+cuenta.saldo = 100.0
+cuenta.saldo = 150.0
+
+
+
+//Ejercicio 2
+
+import Foundation
+
+class Temperatura {
+    var fahrenheit: Double = 0.0
+    var celsius: Double = 0.0 {
+        didSet {
+            fahrenheit = (celsius * 9/5) + 32
+        }
+    }
+    
+    init(celsius: Double) {
+        self.celsius = celsius
+        self.fahrenheit = (celsius * 9/5) + 32
+    }
+}
+
+let temp = Temperatura(celsius: 25.0)
+print("\(temp.fahrenheit)") 
+
+
+
+//Ejercicio 3
+
+import Foundation
+
+struct Rectangulo {
+    var ancho: Double 
+    var alto: Double
+
+    mutating func cambiarDimensiones(ancho: Double, alto: Double) {
+        self.ancho = ancho
+        self.alto = alto
+    }
+}
+
+var rect = Rectangulo(ancho: 5.0, alto: 10.0)
+rect.cambiarDimensiones(ancho: 7.0, alto: 14.0)
+print("Nuevo ancho: \(rect.ancho), Nuevo alto: \(rect.alto)")
+
+
+
+//Ejercicio 4
+
+import Foundation
+
+struct Vector {
+    var x: Double
+    var y: Double
+
+    mutating func mover(dx: Double, dy: Double) {
+        self.x += dx
+        self.y += dy
+    }
+}
+
+var vector = Vector(x: 1.0, y: 2.0)
+vector.mover(dx: 3.0, dy: 4.0)
+
+print("Nuevo valor de x: \(vector.x), Nuevo valor de y: \(vector.y)")
+
+
+
+//Ejercicio 5
+
+import Foundation
+
+class Circulo {
+    var radio: Double
+    
+    var area: Double {
+        get {
+            return 3.1416 * (radio * radio)
+        }
+        set {
+            self.radio = sqrt(newValue / 3.1416)
+        }
+    }
+    
+    init(radio: Double) {
+        self.radio = radio
+    }
+}
+
+var circulo = Circulo(radio: 5.0)
+var area = circulo.area
+print("El área del círculo es \(area)")
+
+circulo.area = 78.5
+print("El nuevo radio del círculo es \(circulo.radio)")
+
+
+
+//Ejercicio 6
+
+import Foundation
+
+struct Rectangulo {
+    var ancho: Double
+    var alto: Double
+    
+    var perimetro: Double {
+        get {
+            return 2 * (ancho + alto)
+        }
+        set(nuevoPerimetro) {
+            let nuevoValor = nuevoPerimetro / 2
+            ancho = nuevoValor / alto
+            alto = nuevoValor / ancho
+        }
+    }
+}
+
+var rect = Rectangulo(ancho: 4.0, alto: 5.0)
+let perimetro = rect.perimetro
+print("El perímetro del rectángulo es \(perimetro)")
+
+rect.perimetro = 36.0
+print("El nuevo ancho del rectángulo es \(rect.ancho) y el nuevo alto es \(rect.alto)")t.perimetro
+rect.perimetro = 36.0
+
+
+
+//Ejercicio 7
+
+import Foundation
+
+let closure = { (a: Int, b: Int) -> Bool in
+    return a > b
+}
+
+let array = [3, 1, 4, 1, 5, 9]
+
+let ordenado = array.sorted(by: closure)
+
+print("Array ordenado: \(ordenado)")
+
+
+
+//Ejercicio 8
+
+import Foundation
+
+let factorial: (Int) -> Int = { (n: Int) -> Int in
+    if n == 0 || n == 1 {
+        return 1
+    }
+    return n * factorial(n - 1)
+}
+
+let resultado = factorial(5)
+print("El factorial de 5 es \(resultado)")

@@ -1,0 +1,366 @@
+//Ejercicio 1
+
+import Foundation
+
+func calcularAreaYPerimetro(ancho: Double, alto: Double) -> (area: Double, perimetro: Double) {
+    let area: Double = ancho * alto
+    let perimetro: Double = 2 * (ancho + alto)
+    return (area, perimetro)
+}
+
+var resultado = calcularAreaYPerimetro(ancho: 5, alto: 10)
+print("Área: \(resultado.area)")
+print("Perímetro: \(resultado.perimetro)")
+
+
+
+//Ejercicio 2
+
+import Foundation
+
+func calcularAreaTriangulo(a: Double, b: Double, c: Double) -> Double? {
+    if a <= 0 || b <= 0 || c <= 0 || (a + b) <= c || (a + c) <= b || (b + c) <= a {
+        print("Los datos ingresados no forman un triángulo válido")
+        return nil
+    }
+    
+    let s = (a + b + c) / 2
+    let area = sqrt(s * (s - a) * (s - b) * (s - c))
+    return area
+}
+
+if let area = calcularAreaTriangulo(a: 2, b: 4, c: 5) {
+    print("El área del triángulo es \(area)")
+} else {
+    print("Datos inválidos para los lados del triángulo")
+}
+
+
+
+//Ejercicio 3
+
+import Foundation
+
+func calcularEstadisticas(numeros: [Int]) -> (media: Double, mediana: Double, moda: Int?) {
+    let suma = numeros.reduce(0, +)
+    let media = Double(suma) / Double(numeros.count)
+    
+    let numerosOrdenados = numeros.sorted()
+    let longitud = numerosOrdenados.count
+    
+    let mediana: Double
+    if longitud % 2 == 0 {
+        mediana = Double(numerosOrdenados[longitud / 2 - 1] + numerosOrdenados[longitud / 2]) / 2.0
+    } else {
+        mediana = Double(numerosOrdenados[longitud / 2])
+    }
+    
+    var frecuencia: [Int: Int] = [:]
+    for numero in numeros {
+        frecuencia[numero, default: 0] += 1
+    }
+    
+    let moda = frecuencia.max { $0.value < $1.value }?.key
+    
+    return (media, mediana, moda)
+}
+
+let estadisticas = calcularEstadisticas(numeros: [1, 2, 2, 3, 4, 4, 4, 5])
+print("Media: \(estadisticas.media)")
+print("Mediana: \(estadisticas.mediana)")
+print("Moda: \(estadisticas.moda ?? 0)")
+
+
+
+//Ejercicio 4
+
+import Foundation
+
+func sumarMatrices(matrizA: [[Int]], matrizB: [[Int]]) -> [[Int]]? {
+    guard matrizA.count == matrizB.count && matrizA[0].count == matrizB[0].count else {
+        print("Las matrices no tienen las mismas dimensiones")
+        return nil
+    }
+    
+    var matrizResultado = matrizA
+    
+    for i in 0..<matrizA.count {
+        for j in 0..<matrizA[i].count {
+            matrizResultado[i][j] = matrizA[i][j] + matrizB[i][j]
+        }
+    }
+    
+    return matrizResultado
+}
+
+if let suma = sumarMatrices(matrizA: [[1, 2], [3, 4]], matrizB: [[5, 6], [7, 8]]) {
+    print("Suma de matrices: \(suma)")
+} else {
+    print("No se pudo realizar la suma de las matrices")
+}
+
+
+
+//Ejercicio 5
+
+import Foundation
+
+func sumarMatrices(_ matrizA: [[Int]], _ matrizB: [[Int]]) -> [[Int]]? {
+    if matrizA.count != matrizB.count || matrizA[0].count != matrizB[0].count {
+        print("Las matrices no tienen las mismas dimensiones")
+        return nil
+    }
+    
+    var matrizResultado = matrizA
+
+    for i in 0..<matrizA.count {
+        for j in 0..<matrizA[i].count {
+            matrizResultado[i][j] = matrizA[i][j] + matrizB[i][j]
+        }
+    }
+
+    return matrizResultado
+}
+
+
+if let suma = sumarMatrices([[1, 2], [3, 4]], [[5, 6], [7, 8]]) {
+    print("Suma de matrices: \(suma)")
+} else {
+    print("Error al sumar matrices")
+}
+
+
+func multiplicarMatrices(_ matrizA: [[Int]], _ matrizB: [[Int]]) -> [[Int]]? {
+    if matrizA[0].count != matrizB.count {
+        print("Las matrices no pueden ser multiplicadas")
+        return nil
+    }
+
+    let filasA = matrizA.count
+    let columnasA = matrizA[0].count
+    let columnasB = matrizB[0].count
+
+    var matrizResultado = Array(repeating: Array(repeating: 0, count: columnasB), count: filasA)
+
+    for i in 0..<filasA {
+        for j in 0..<columnasB {
+            for k in 0..<columnasA {
+                matrizResultado[i][j] += matrizA[i][k] * matrizB[k][j]
+            }
+        }
+    }
+
+    return matrizResultado
+}
+
+
+if let producto = multiplicarMatrices([[1, 2], [3, 4]], [[5, 6], [7, 8]]) {
+    print("Producto de matrices: \(producto)")
+} else {
+    print("Error al multiplicar matrices")
+}
+
+
+
+//Ejercicio 6
+
+import Foundation
+
+func ordenarPorSeleccion(_ array: inout [Int]) {
+    for i in 0..<array.count - 1 {
+        var minIndex = i
+        for j in i + 1..<array.count {
+            if array[j] < array[minIndex] {
+                minIndex = j
+            }
+        }
+        if i != minIndex {
+            array.swapAt(i, minIndex)
+        }
+    }
+}
+
+var numeros = [64, 25, 12, 22, 11, 90]
+ordenarPorSeleccion(&numeros)
+print("Array ordenado por selección: \(numeros)")
+
+
+
+//Ejercicio 7
+
+import Foundation
+
+class Grafo {
+
+    var adjList: [String: [String]] = [:]
+
+    func agregarArista(origen: String, destino: String) {
+        if adjList[origen] == nil {
+            adjList[origen] = []
+        }
+        adjList[origen]?.append(destino)
+    }
+
+    func dfs(desde nodo: String) -> [String] {
+        var visitados: Set<String> = []
+        var resultado: [String] = []
+        dfsUtil(nodo, &visitados, &resultado)
+        return resultado
+    }
+
+    private func dfsUtil(_ nodo: String, _ visitados: inout Set<String>, _ resultado: inout [String]) {
+        visitados.insert(nodo)
+        resultado.append(nodo)
+        
+        if let vecinos = adjList[nodo] {
+            for vecino in vecinos {
+                if !visitados.contains(vecino) {
+                    dfsUtil(vecino, &visitados, &resultado)
+                }
+            }
+        }
+    }
+}
+
+let grafo = Grafo()
+grafo.agregarArista(origen: "A", destino: "B")
+grafo.agregarArista(origen: "A", destino: "C")
+grafo.agregarArista(origen: "B", destino: "D")
+grafo.agregarArista(origen: "B", destino: "E")
+grafo.agregarArista(origen: "C", destino: "F")
+grafo.agregarArista(origen: "C", destino: "G")
+
+let recorridoDFS = grafo.dfs(desde: "A")
+print("Recorrido DFS: \(recorridoDFS)")
+
+
+
+//Ejercicio 8
+
+import Foundation
+
+func sumaRecursiva(n: Int) -> Int {
+    if n == 0 {
+        return 0
+    } else {
+        return n + sumaRecursiva(n - 1)
+    }
+}
+
+func sumaIterativa(n: Int) -> Int {
+    var suma = 0
+    for i in 1...n {
+        suma += i
+    }
+    return suma
+}
+
+let resultadoRecursivo = sumaRecursiva(n: 10)
+let resultadoIterativo = sumaIterativa(n: 10)
+
+print("Suma recursiva: \(resultadoRecursivo)")
+print("Suma iterativa: \(resultadoIterativo)")
+
+
+
+//Ejercicio 9
+
+import Foundation
+
+func busquedaBinariaRecursiva(array: [Int], valor: Int, inicio: Int, fin: Int) -> Int? {
+    if inicio > fin {
+        return nil
+    }
+    
+    let medio = (inicio + fin) / 2
+    
+    if array[medio] == valor {
+        return medio
+    } else if array[medio] < valor {
+        return busquedaBinariaRecursiva(array: array, valor: valor, inicio: medio + 1, fin: fin)
+    } else {
+        return busquedaBinariaRecursiva(array: array, valor: valor, inicio: inicio, fin: medio - 1)
+    }
+}
+
+let numerosOrdenados = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+if let posicion = busquedaBinariaRecursiva(array: numerosOrdenados, valor: 5, inicio: 0, fin: numerosOrdenados.count - 1) {
+    print("El valor se encuentra en la posición \(posicion)")
+} else {
+    print("El valor no se encuentra en el array")
+}
+
+
+
+//Ejercicio 10
+
+import Foundation
+
+class Coche {
+    var marca: String
+    var modelo: String
+    var anio: Int
+
+    init(marca: String, modelo: String, anio: Int) {
+        self.marca = marca
+        self.modelo = modelo
+        self.anio = anio
+    }
+
+    func describir() -> String {
+        return "Marca: \(self.marca), modelo: \(self.modelo), año: \(self.anio)"
+    }
+}
+
+var miCoche = Coche(marca: "Toyota", modelo: "Corolla", anio: 2020)
+print("\(miCoche.describir())")
+
+
+
+//Ejercicio 11
+
+import Foundation
+
+struct Rectangulo {
+    var ancho : Double
+    var alto : Double
+
+    func calcularArea() -> Double {
+        return self.ancho * self.alto
+    }
+
+    func calcularPerimetro() -> Double {
+        return 2 * (self.ancho * self.alto)
+    }
+}
+
+var miRectangulo = Rectangulo(ancho: 5.0, alto: 10.0)
+print("Área: \(miRectangulo.calcularArea())")
+print("Perímetro: \(miRectangulo.calcularPerimetro())")
+
+
+
+//Ejercicio 12
+
+import Foundation
+
+protocol Volable{
+    func volar() -> String
+}
+
+class Pajaro : Volable {
+    func volar() -> String{
+        return "El pájaro está volando"
+    }
+}
+
+class Avion : Volable {
+    func volar() -> String{
+        return "El avión está volando"
+    }
+}
+
+var miPajaro = Pajaro()
+var miAvion = Avion()
+print("\(miPajaro.volar())")
+print("\(miAvion.volar())")
